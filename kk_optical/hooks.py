@@ -242,3 +242,22 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+fixtures = [
+    {
+        "dt": "Custom Field",
+        "filters": [["dt", "=", "User"]]
+    }
+]
+
+doc_events = {
+    "Sales Order": {
+        "on_submit": [
+            "kk_optical.sales_order_hooks.assign_warehouse",
+            "kk_optical.sales_order_hooks.update_cust_store_association"
+        ],
+        "on_update": "kk_optical.sales_order_hooks.calculate_sales_dist"
+    },
+    "Customer": {
+        "after_insert": "kk_optical.customer_hooks.assign_store_association"
+    }
+}
