@@ -244,8 +244,12 @@ app_license = "mit"
 
 fixtures = [
     {
-        "dt": "Custom Field",
-        "filters": [["dt", "=", "User"]]
+        "doctype": "Custom Field",
+        "filters": [["dt", "in", ["User", "Lead"]]]
+    },
+    {
+        "doctype": "Property Setter",
+        "filters": [["doc_type", "=", "Lead"]]
     }
 ]
 
