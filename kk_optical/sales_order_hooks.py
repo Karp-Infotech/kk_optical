@@ -2,15 +2,17 @@ import frappe
 
 def assign_warehouse(doc, method):
 
+    if(doc.custom_sales_channel == "Web"):
+        return
 
     # Get the logged-in user
     current_user = frappe.session.user
     user_doc = frappe.get_doc("User", current_user)
+
     retailer_doc = frappe.get_doc("Retailer", user_doc.retailer)
     
     items_not_available = []
     for item in doc.items:
-        print(item.item_group)
 
         if item.item_group == "Eyeglasses" and not is_stock_in_warehosue(item,retailer_doc.store_warehouse):
             item.warehouse = retailer_doc.store_warehouse
@@ -44,6 +46,9 @@ def is_stock_in_warehosue(item, warehouse):
 
 
 def update_cust_store_association(doc, method):
+     
+    if(doc.custom_sales_channel == "Web"):
+        return
 
     # Get the customer linked to the sales order
     customer = frappe.get_doc("Customer", doc.customer)
@@ -60,7 +65,10 @@ def update_cust_store_association(doc, method):
 
     
 def calculate_sales_dist(doc, method):
-    
+     
+
+    if(doc.custom_sales_channel == "Web"):
+        return
     # Get the customer linked to the sales order
     customer = frappe.get_doc("Customer", doc.customer)
     kk_sales_portion = 0

@@ -297,7 +297,7 @@
    "name": "Item-custom_frame_rim",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "Full\nHalf\nRimless",
+   "options": "Full Frame\nHalf Frame\nRimless",
    "owner": "Administrator",
    "permlevel": 0,
    "precision": "",

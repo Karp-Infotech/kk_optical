@@ -258,7 +258,8 @@ doc_events = {
         "on_submit": [
             "kk_optical.sales_order_hooks.assign_warehouse",
             "kk_optical.sales_order_hooks.update_cust_store_association"
-        ],
+        ]
+        ,
         "on_update": "kk_optical.sales_order_hooks.calculate_sales_dist"
     },
     "Customer": {
