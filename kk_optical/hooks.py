@@ -263,6 +263,6 @@ doc_events = {
         "on_update": "kk_optical.sales_order_hooks.calculate_sales_dist"
     },
     "Customer": {
-        "after_insert": "kk_optical.customer_hooks.assign_store_association"
+        "after_insert": "kk_optical.customer_hooks.add_kk_data"
     }
 }
