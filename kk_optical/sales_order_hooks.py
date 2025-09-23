@@ -1,31 +1,5 @@
 import frappe
 
-def assign_warehouse(doc, method):
-
-    if(doc.custom_sales_channel == "Web"):
-        return
-
-    # Get the logged-in user
-    current_user = frappe.session.user
-    user_doc = frappe.get_doc("User", current_user)
-
-    retailer_doc = frappe.get_doc("Retailer", user_doc.retailer)
-    
-    items_not_available = []
-    for item in doc.items:
-
-        if item.item_group == "Eyeglasses" and not is_stock_in_warehosue(item,retailer_doc.store_warehouse):
-            item.warehouse = retailer_doc.store_warehouse
-            items_not_available.append(item.item_code)
-
-    if items_not_available:
-        item_list = ", ".join(items_not_available)
-        frappe.msgprint(
-            f"The following items are last piece. Please keep them ready for pickup </b>: {item_list}"
-        )
-    # Assign Source Store to SO
-    doc.custom_source_store = retailer_doc.store_warehouse
-
 
 def is_stock_in_warehosue(item, warehouse):
     # Fetch the actual quantity available in the warehouse
@@ -45,28 +19,25 @@ def is_stock_in_warehosue(item, warehouse):
          return True
 
 
-def update_cust_store_association(doc, method):
-     
+def update_cust_retailer_association(doc, method):
+
     if(doc.custom_sales_channel == "Web"):
         return
+    else:
+        # Get the customer linked to the sales order
+        customer_doc = frappe.get_doc("Customer", doc.customer)
 
-    # Get the customer linked to the sales order
-    customer = frappe.get_doc("Customer", doc.customer)
-    current_user = frappe.session.user
-    user_doc = frappe.get_doc("User", current_user)
-    retailer_doc = frappe.get_doc("Retailer", user_doc.retailer)
-
-    if customer.custom_customer_relationship == "Indirect":
-        # Set the warehouse field in the Customer doctype based on the Sales Order warehouse
-        customer.custom_store_association = retailer_doc.store_warehouse
-        # Bypass permission check for write
-        customer.flags.ignore_permissions = True
-        customer.save()
+        if(customer_doc.customer_type == "Company") :
+            if(doc.custom_end_customer):
+                end_customer_doc = frappe.get_doc("Customer", doc.custom_end_customer)
+                if (end_customer_doc.custom_assigned_retailer):
+                    end_customer_doc.custom_assigned_retailer = customer_doc.custom_assigned_retailer
+                    end_customer_doc.flags.ignore_permissions = True
+                    end_customer_doc.save()
 
     
 def calculate_sales_dist(doc, method):
      
-
     if(doc.custom_sales_channel == "Web"):
         return
     # Get the customer linked to the sales order

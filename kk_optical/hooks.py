@@ -256,11 +256,10 @@ fixtures = [
 doc_events = {
     "Sales Order": {
         "on_submit": [
-            "kk_optical.sales_order_hooks.assign_warehouse",
-            "kk_optical.sales_order_hooks.update_cust_store_association"
+            "kk_optical.sales_order_hooks.update_cust_retailer_association"
         ]
-        ,
-        "on_update": "kk_optical.sales_order_hooks.calculate_sales_dist"
+        #,
+        #"on_update": "kk_optical.sales_order_hooks.calculate_sales_dist"
     },
     "Customer": {
         "after_insert": "kk_optical.customer_hooks.add_kk_data"

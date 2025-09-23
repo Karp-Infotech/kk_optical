@@ -1,19 +1,14 @@
 import frappe
 
 def add_kk_data(doc, method):
+    current_user = frappe.session.user
+    user_doc = frappe.get_doc("User", current_user)
 
-    # Set a store association on first save
-    if not doc.custom_store_association:
-        # Example: Set retailer based on current user
-        current_user = frappe.session.user
-        user_doc = frappe.get_doc("User", current_user)
-
-        if(user_doc.user_type == "Website User") :
-            doc.custom_customer_relationship = "Direct"
-            if(not doc.customer_name) : 
-                copy_username_to_custmer (user_doc, doc)
-            assign_loyalty_program(doc)
-            doc.save()
+    if(user_doc.user_type == "Website User") :
+        if(not doc.customer_name) : 
+            copy_username_to_custmer (user_doc, doc)
+        assign_loyalty_program(doc)
+        doc.save()
 
 
 def copy_username_to_custmer (user, customer) :
