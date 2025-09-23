@@ -7,7 +7,7 @@ def add_kk_data(doc, method):
         # Example: Set retailer based on current user
         current_user = frappe.session.user
         user_doc = frappe.get_doc("User", current_user)
-        print ("User Type : " + user_doc.user_type)
+
         if(user_doc.user_type == "Website User") :
             doc.custom_customer_relationship = "Direct"
             if(not doc.customer_name) : 
